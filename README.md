@@ -1,2 +1,2 @@
-# cxf-rt-javassist
-通过javassist生成基于cxf的jaxws、jaxrs实现
+# spring-javassist
+基于javassist生成Spring MVC 框架的Controller
