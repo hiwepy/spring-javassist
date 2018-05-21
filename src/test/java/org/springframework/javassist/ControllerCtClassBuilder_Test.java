@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.UUID;
 
 import javax.jws.WebParam;
@@ -13,8 +14,14 @@ import javax.jws.WebParam;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.javassist.bytecode.EndpointApiCtClassBuilder;
+import org.springframework.javassist.bytecode.definition.MvcBound;
+import org.springframework.javassist.bytecode.definition.MvcMethod;
 import org.springframework.javassist.bytecode.definition.MvcParam;
+import org.springframework.javassist.bytecode.definition.MvcParamFrom;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javassist.CtClass;
 
@@ -25,7 +32,7 @@ public class ControllerCtClassBuilder_Test {
 	public void testClass() throws Exception {
 		
 		CtClass ctClass = new EndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
-				.controller("")
+				.controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.makeMethod("public void sayHello(String txt) { System.out.println(txt); }")
@@ -81,13 +88,16 @@ public class ControllerCtClassBuilder_Test {
 	public void testInstance() throws Exception{
 		
 		InvocationHandler handler = new EndpointApiInvocationHandler();
-		
-		Object ctObject = new EndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2")
-				.controller("")
+
+		Object ctObject = new EndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
-				.newMethod(String.class, "sayHello", new MvcParam(String.class, "text"))
-				.newMethod(String.class, "sayHello2", new MvcParam(String.class, "text", WebParam.Mode.OUT))
+				.newMethod("sayHello", "say/{word}", RequestMethod.POST, MediaType.ALL_VALUE, new MvcBound("100212"),
+						new MvcParam(String.class, "text"))
+				.newMethod(ResponseEntity.class,
+						new MvcMethod("sayHello2", new String[] { "say2/{word}", "say22/{word}" }, RequestMethod.POST,
+								RequestMethod.GET),
+						new MvcBound("100212"), new MvcParam(String.class, "word", MvcParamFrom.PATH))
 				.toInstance(handler);
 		
 		Class clazz = ctObject.getClass();

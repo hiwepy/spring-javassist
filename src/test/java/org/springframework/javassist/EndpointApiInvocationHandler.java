@@ -19,7 +19,9 @@ public class EndpointApiInvocationHandler implements InvocationHandler {
 			Class<?> declaringClass = method.getDeclaringClass();
 			bound = declaringClass.getAnnotation(WebBound.class);
 		}
-		  
+		
+		System.out.println("bound : " + bound.toString());
+		
 		System.out.println(method.getName());
 		for (Annotation anno : method.getAnnotations()) {
 			System.out.println(anno.toString());

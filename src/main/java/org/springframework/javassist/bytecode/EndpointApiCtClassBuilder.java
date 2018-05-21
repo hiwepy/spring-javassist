@@ -90,6 +90,14 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @Controller
+	 * @return
+	 */
+	public EndpointApiCtClassBuilder controller() {
+		return this.controller("");
+	}
+	
+	/**
+	 * 添加类注解 @Controller
 	 * @param name Controller名称：必须唯一
 	 * @return
 	 */
@@ -97,6 +105,14 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotController(constPool, name));
 		return this;
+	}
+	
+	/**
+	 * 添加类注解 @RestController
+	 * @return
+	 */
+	public EndpointApiCtClassBuilder restController() {
+		return this.restController("");
 	}
 	
 	/**
@@ -251,6 +267,21 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 		return this;
 	}
 
+	/**
+     * Compiles the given source code and creates a method.
+     * The source code must include not only the method body
+     * but the whole declaration, for example,
+     *
+     * <pre>"public Object id(Object obj) { return obj; }"</pre>
+     *
+     * @param src               the source text. 
+     */
+	public <T> EndpointApiCtClassBuilder makeMethod(final String src) throws CannotCompileException {
+		//创建方法 
+		declaring.addMethod(CtMethod.make(src, declaring));
+		return this;
+	}
+	
 	/**
 	 * @param methodName   	： 方法名称
 	 * @param path   		： 发布地址

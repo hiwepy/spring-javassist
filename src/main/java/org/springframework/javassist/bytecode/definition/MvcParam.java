@@ -53,12 +53,13 @@ public class MvcParam<T> {
 	public MvcParam(Class<T> type, String name, MvcParamFrom from) {
 		this.type = type;
 		this.name = name;
+		this.from = from;
 	}
 
 	public MvcParam(Class<T> type, String name, MvcParamFrom from, String def ) {
 		this.type = type;
 		this.name = name;
-		this.name = name;
+		this.from = from;
 		this.def = def;
 	}
 	
