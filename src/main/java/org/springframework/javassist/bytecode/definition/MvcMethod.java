@@ -155,6 +155,13 @@ public class MvcMethod {
 		this.path = path;
 		this.method = method;
 	}
+	
+	public MvcMethod(String name, String[] path, boolean responseBody, RequestMethod... method) {
+		this.name = name;
+		this.path = path;
+		this.method = method;
+		this.responseBody = responseBody;
+	}
 
 	public MvcMethod(String name, String[] path, RequestMethod[] method, String[] params, String[] headers,
 			String[] consumes, String[] produces, boolean responseBody) {

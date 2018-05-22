@@ -3,6 +3,7 @@ package org.springframework.javassist.bytecode;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +34,7 @@ import javassist.bytecode.annotation.Annotation;
 /**
  * 动态构建Controller接口
  */
-public class EndpointApiCtClassBuilder implements Builder<CtClass> {
+public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	// 构建动态类
 	protected ClassPool pool = null;
@@ -41,11 +42,11 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	protected ClassFile classFile = null;
 	//private Loader loader = new Loader(pool);
 	
-	public EndpointApiCtClassBuilder(final String classname) throws CannotCompileException, NotFoundException  {
+	public MvcEndpointApiCtClassBuilder(final String classname) throws CannotCompileException, NotFoundException  {
 		this(ClassPoolFactory.getDefaultPool(), classname);
 	}
 	
-	public EndpointApiCtClassBuilder(final ClassPool pool, final String classname) throws CannotCompileException, NotFoundException {
+	public MvcEndpointApiCtClassBuilder(final ClassPool pool, final String classname) throws CannotCompileException, NotFoundException {
 		
 		this.pool = pool;
 		this.declaring = EndpointApiUtils.makeClass(pool, classname);
@@ -66,7 +67,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @param tags
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder api(String... tags) {
+	public MvcEndpointApiCtClassBuilder api(String... tags) {
 		
 		if(tags != null && tags.length > 0) {
 			ConstPool constPool = this.classFile.getConstPool();
@@ -80,7 +81,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * 添加类注解  @ApiIgnore
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder apiIgnore() {
+	public MvcEndpointApiCtClassBuilder apiIgnore() {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotApiIgnore(constPool, "Ignore"));
@@ -92,7 +93,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * 添加类注解 @Controller
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder controller() {
+	public MvcEndpointApiCtClassBuilder controller() {
 		return this.controller("");
 	}
 	
@@ -101,7 +102,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @param name Controller名称：必须唯一
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder controller(String name) {
+	public MvcEndpointApiCtClassBuilder controller(String name) {
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotController(constPool, name));
 		return this;
@@ -111,7 +112,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * 添加类注解 @RestController
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder restController() {
+	public MvcEndpointApiCtClassBuilder restController() {
 		return this.restController("");
 	}
 	
@@ -120,7 +121,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @param name Controller名称：必须唯一
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder restController(String name) {
+	public MvcEndpointApiCtClassBuilder restController(String name) {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotRestController(constPool, name));
@@ -132,7 +133,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * 添加类注解 @RequestMapping
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder requestMapping(MvcMapping mapping) {
+	public MvcEndpointApiCtClassBuilder requestMapping(MvcMapping mapping) {
 
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotRequestMapping(constPool, mapping));
@@ -144,7 +145,20 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * 添加类注解 @RequestMapping
 	 * @return
 	 */
-	public EndpointApiCtClassBuilder requestMapping(String name, String[] path, RequestMethod[] method,
+	public MvcEndpointApiCtClassBuilder requestMapping(String path) {
+
+		ConstPool constPool = this.classFile.getConstPool();
+		JavassistUtils.addClassAnnotation(declaring, EndpointApiUtils.annotRequestMapping(constPool, null, new String[] { path }, null,
+				null, null, null, null));
+
+		return this;
+	}
+	
+	/**
+	 * 添加类注解 @RequestMapping
+	 * @return
+	 */
+	public MvcEndpointApiCtClassBuilder requestMapping(String name, String[] path, RequestMethod[] method,
 			String[] params, String[] headers, String[] consumes, String[] produces) {
 
 		ConstPool constPool = this.classFile.getConstPool();
@@ -164,7 +178,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @throws CannotCompileException 
 	 * @throws NotFoundException 
 	 */
-	public <T> EndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required) throws CannotCompileException, NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required) throws CannotCompileException, NotFoundException {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		
@@ -174,6 +188,37 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 
         // 在属性上添加注解(Autowired)
         CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
+
+        //新增Field
+        declaring.addField(field);
+
+		return this;
+	}
+	
+	/**
+	 * 添加字段注解 @Autowired 实现对象注入
+	 * @param type
+	 * @param name
+	 * @param required 	： Declares whether the annotated dependency is required.
+	 * @param qualifier ： 
+	 * @return
+	 * @throws CannotCompileException 
+	 * @throws NotFoundException 
+	 */
+	public <T> MvcEndpointApiCtClassBuilder autowiredHandler(boolean required, String qualifier) throws CannotCompileException, NotFoundException {
+		
+		ConstPool constPool = this.classFile.getConstPool();
+		
+		// 属性字段
+        CtField field = declaring.getField("handler");
+
+        // 在属性上添加注解(Autowired)
+        CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
+        
+        // 在属性上添加注解(Qualifier)
+        if(StringUtils.isNotBlank(qualifier)) {
+            CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).markField(field);
+        }
 
         //新增Field
         declaring.addField(field);
@@ -191,7 +236,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @throws CannotCompileException 
 	 * @throws NotFoundException 
 	 */
-	public <T> EndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required, String qualifier) throws CannotCompileException, NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required, String qualifier) throws CannotCompileException, NotFoundException {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		
@@ -203,7 +248,9 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
         CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
         
         // 在属性上添加注解(Qualifier)
-        CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).markField(field);
+        if(StringUtils.isNotBlank(qualifier)) {
+            CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).markField(field);
+        }
         
         //新增Field
         declaring.addField(field);
@@ -215,14 +262,14 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	/**
 	 * 通过给动态类增加 <code>@WebBound</code>注解实现，数据的绑定
 	 */
-	public EndpointApiCtClassBuilder bind(final String uid, final String json) {
+	public MvcEndpointApiCtClassBuilder bind(final String uid, final String json) {
 		return bind(new MvcBound(uid, json));
 	}
 	
 	/**
 	 * 通过给动态类增加 <code>@WebBound</code>注解实现，数据的绑定
 	 */
-	public EndpointApiCtClassBuilder bind(final MvcBound bound) {
+	public MvcEndpointApiCtClassBuilder bind(final MvcBound bound) {
 
 		ConstPool constPool = this.classFile.getConstPool();
 		Annotation annot = EndpointApiUtils.annotWebBound(constPool, bound);
@@ -244,18 +291,18 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
      *
      * @param src               the source text.
      */
-	public <T> EndpointApiCtClassBuilder makeField(final String src) throws CannotCompileException {
+	public <T> MvcEndpointApiCtClassBuilder makeField(final String src) throws CannotCompileException {
 		//创建属性
         declaring.addField(CtField.make(src, declaring));
 		return this;
 	}
 	
-	public <T> EndpointApiCtClassBuilder newField(final Class<T> fieldClass, final String fieldName, final String fieldValue) throws CannotCompileException, NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder newField(final Class<T> fieldClass, final String fieldName, final String fieldValue) throws CannotCompileException, NotFoundException {
 		CtFieldBuilder.create(declaring, this.pool.get(fieldClass.getName()), fieldName, fieldValue);
 		return this;	
 	}
 	
-	public <T> EndpointApiCtClassBuilder removeField(final String fieldName) throws NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder removeField(final String fieldName) throws NotFoundException {
 		
 		// 检查字段是否已经定义
 		if(!JavassistUtils.hasField(declaring, fieldName)) {
@@ -276,7 +323,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
      *
      * @param src               the source text. 
      */
-	public <T> EndpointApiCtClassBuilder makeMethod(final String src) throws CannotCompileException {
+	public <T> MvcEndpointApiCtClassBuilder makeMethod(final String src) throws CannotCompileException {
 		//创建方法 
 		declaring.addMethod(CtMethod.make(src, declaring));
 		return this;
@@ -293,7 +340,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */
-	public <T> EndpointApiCtClassBuilder newMethod(String methodName, String path, RequestMethod method, String contentType,
+	public <T> MvcEndpointApiCtClassBuilder newMethod(String methodName, String path, RequestMethod method, String contentType,
 			MvcBound bound, MvcParam<?>... params) throws CannotCompileException, NotFoundException {
 		
 		//ResponseEntity.class
@@ -338,7 +385,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @throws CannotCompileException
 	 * @throws NotFoundException 
 	 */ 
-	public <T> EndpointApiCtClassBuilder newMethod(final Class<T> rtClass, final MvcMethod method, final MvcBound bound, MvcParam<?>... params) throws CannotCompileException, NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder newMethod(final Class<T> rtClass, final MvcMethod method, final MvcBound bound, MvcParam<?>... params) throws CannotCompileException, NotFoundException {
 	       
 		ConstPool constPool = this.classFile.getConstPool();
 		
@@ -368,7 +415,7 @@ public class EndpointApiCtClassBuilder implements Builder<CtClass> {
         return this;
 	}
 	 
-	public <T> EndpointApiCtClassBuilder removeMethod(final String methodName, MvcParam<?>... params) throws NotFoundException {
+	public <T> MvcEndpointApiCtClassBuilder removeMethod(final String methodName, MvcParam<?>... params) throws NotFoundException {
 		
 		// 有参方法
 		if(params != null && params.length > 0) {

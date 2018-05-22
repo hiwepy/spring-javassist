@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.javassist.bytecode.EndpointApiCtClassBuilder;
+import org.springframework.javassist.bytecode.MvcEndpointApiCtClassBuilder;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.bytecode.definition.MvcMethod;
 import org.springframework.javassist.bytecode.definition.MvcParam;
@@ -31,7 +31,7 @@ public class ControllerCtClassBuilder_Test {
 	//@Test
 	public void testClass() throws Exception {
 		
-		CtClass ctClass = new EndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
+		CtClass ctClass = new MvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
 				.controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
@@ -89,7 +89,7 @@ public class ControllerCtClassBuilder_Test {
 		
 		InvocationHandler handler = new EndpointApiInvocationHandler();
 
-		Object ctObject = new EndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
+		Object ctObject = new MvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.newMethod("sayHello", "say/{word}", RequestMethod.POST, MediaType.ALL_VALUE, new MvcBound("100212"),
