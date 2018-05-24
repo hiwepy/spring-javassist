@@ -16,7 +16,6 @@
 package org.springframework.javassist.utils;
 
 import java.lang.reflect.InvocationHandler;
-import java.nio.file.Path;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowire;
@@ -66,7 +65,6 @@ import javassist.bytecode.ConstPool;
 import javassist.bytecode.MethodInfo;
 import javassist.bytecode.ParameterAnnotationsAttribute;
 import javassist.bytecode.annotation.Annotation;
-import javassist.bytecode.annotation.ArrayMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
 
 public class EndpointApiUtils {
