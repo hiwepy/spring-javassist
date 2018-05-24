@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.javassist.annotation.ParamName;
 import org.springframework.javassist.annotation.WebBound;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.bytecode.definition.MvcMapping;
@@ -444,6 +445,8 @@ public class EndpointApiUtils {
 		// 构造方法体
 		StringBuilder body = new StringBuilder(); 
         body.append("{\n");
+            body.append("System.out.println(123456);");
+            body.append("System.out.println(getHandler());");
         	body.append("if(getHandler() != null){\n");
         		body.append("Method method = this.getClass().getDeclaredMethod(\"" + methodName + "\", $sig);");
         		body.append("return ($r)getHandler().invoke($0, method, $args);");
@@ -572,7 +575,7 @@ public class EndpointApiUtils {
 		// 添加参数注解
 		if (params != null && params.length > 0) {
 			
-			Annotation[][] paramArrays = new Annotation[params.length][1];
+			Annotation[][] paramArrays = new Annotation[params.length][2];
 			
 			Annotation paramAnnot = null;
 			boolean defAnnot = false;
@@ -620,8 +623,17 @@ public class EndpointApiUtils {
 						paramAnnot.addMemberValue("defaultValue", new StringMemberValue(params[i].getDef(), constPool));
 					}
 				}
+				paramAnnot.addMemberValue("name", new StringMemberValue(params[i].getName(), constPool));
+				
+				
 				
 				paramArrays[i][0] = paramAnnot;
+				
+				// 增加参数名称注解,方便业务使用
+				Annotation nameAnnot = new Annotation(ParamName.class.getName(), constPool);
+				nameAnnot.addMemberValue("name", new StringMemberValue(params[i].getName(), constPool));
+				
+				paramArrays[i][1] = nameAnnot;
 				
 			}
 			

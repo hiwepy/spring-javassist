@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 
 public abstract class EndpointApi {
 
-	private InvocationHandler handler;
+	protected InvocationHandler handler;
 	
 	public EndpointApi() {
 	}

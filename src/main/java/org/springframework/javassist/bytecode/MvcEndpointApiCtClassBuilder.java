@@ -27,6 +27,7 @@ import javassist.CtMethod;
 import javassist.CtNewConstructor;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.annotation.Annotation;
@@ -211,17 +212,23 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 		
 		// 属性字段
         CtField field = declaring.getField("handler");
-
-        // 在属性上添加注解(Autowired)
-        CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
+       
+        AnnotationsAttribute attribute = JavassistUtils.getFieldAnnotationsAttribute(field);
         
         // 在属性上添加注解(Qualifier)
         if(StringUtils.isNotBlank(qualifier)) {
-            CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).markField(field);
+        	Annotation annot = CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).build();
+        	attribute.addAnnotation(annot);
         }
+        
+        // 在属性上添加注解(Autowired)
+        attribute.addAnnotation(CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).build());
+        
+
+       // field.getFieldInfo().addAttribute(attribute);
 
         //新增Field
-        declaring.addField(field);
+        // declaring.addField(field);
 
 		return this;
 	}
@@ -244,13 +251,13 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
         CtField field = new CtField(pool.get(type.getName()), name, declaring);
         field.setModifiers(Modifier.PRIVATE);
 
-        // 在属性上添加注解(Autowired)
-        CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
-        
         // 在属性上添加注解(Qualifier)
         if(StringUtils.isNotBlank(qualifier)) {
             CtAnnotationBuilder.create(Qualifier.class, constPool).addStringMember("value", qualifier).markField(field);
         }
+        
+        // 在属性上添加注解(Autowired)
+        CtAnnotationBuilder.create(Autowired.class, constPool).addBooleanMember("required", required).markField(field);
         
         //新增Field
         declaring.addField(field);
