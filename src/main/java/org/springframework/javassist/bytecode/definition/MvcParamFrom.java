@@ -1,7 +1,11 @@
 package org.springframework.javassist.bytecode.definition;
 
 import java.beans.PropertyEditor;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -32,7 +36,7 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.CookieValue
 	 */
-	COOKIE,
+	COOKIE("COOKIE", "HTTP Cookie"),
 	/**
 	 * Annotation which indicates that a method parameter should be bound to a
 	 * name-value pair within a path segment. Supported for {@link RequestMapping}
@@ -40,7 +44,7 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.MatrixVariable
 	 */
-	MATRIX,
+	MATRIX("MATRIX", "Name-value Pair Within A Path Segment"),
 	/**
 	 * Annotation which indicates that a method parameter should be bound to a URI
 	 * template variable. Supported for {@link RequestMapping} annotated handler
@@ -48,13 +52,13 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.PathVariable
 	 */
-	PATH,
+	PATH("PATH", "URI Template Variable"),
 	/**
 	 * Annotation to bind a method parameter to a request attribute.
 	 * 
 	 * @see org.springframework.web.bind.annotation.RequestAttribute
 	 */
-	ATTR,
+	ATTR("ATTR", "Request Attribute"),
 	/**
 	 * Annotation indicating a method parameter should be bound to the body of the
 	 * web request. The body of the request is passed through an
@@ -64,7 +68,7 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.RequestBody
 	 */
-	BODY,
+	BODY("BODY", "Request Body"),
 	/**
 	 * Annotation which indicates that a method parameter should be bound to a web
 	 * request header.
@@ -82,7 +86,7 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.RequestHeader
 	 */
-	HEADER,
+	HEADER("HEADER", "Request Header"),
 	/**
 	 * Annotation which indicates that a method parameter should be bound to a web
 	 * request parameter.
@@ -105,7 +109,7 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.RequestParam
 	 */
-	PARAM,
+	PARAM("PARAM", "Request Parameter"),
 
 	/**
 	 * Annotation that can be used to associate the part of a "multipart/form-data"
@@ -135,6 +139,55 @@ public enum MvcParamFrom {
 	 * 
 	 * @see org.springframework.web.bind.annotation.RequestPart
 	 */
-	PART;
+	PART("PART", "\"multipart/form-data\" Request Part");
+	
+	private String key;
+	private String desc;
+
+	private MvcParamFrom(String key, String desc) {
+		this.key = key;
+		this.desc = desc;
+
+	}
+	
+	public String getKey() {
+		return key;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public boolean equals(MvcParamFrom from) {
+		return this.compareTo(from) == 0;
+	}
+
+	public boolean equals(String from) {
+		return this.compareTo(MvcParamFrom.valueOfIgnoreCase(from)) == 0;
+	}
+	
+	public static MvcParamFrom valueOfIgnoreCase(String from) {
+		for (MvcParamFrom fromEnum : MvcParamFrom.values()) {
+			if (fromEnum.getKey().equals(from)) {
+				return fromEnum;
+			}
+		}
+		throw new NoSuchElementException("Cannot found MvcParamFrom with from '" + from + "'.");
+	}
+	
+	public Map<String, String> toMap() {
+		Map<String, String> driverMap = new HashMap<String, String>();
+		driverMap.put("key", this.getKey());
+		driverMap.put("desc", this.getDesc());
+		return driverMap;
+	}
+	
+	public static List<Map<String, String>> fromList() {
+		List<Map<String, String>> fromList = new LinkedList<Map<String, String>>();
+		for (MvcParamFrom fromEnum : MvcParamFrom.values()) {
+			fromList.add(fromEnum.toMap());
+		}
+		return fromList;
+	}
 
 }
