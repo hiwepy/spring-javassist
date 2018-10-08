@@ -65,8 +65,8 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @Api
-	 * @param tags
-	 * @return
+	 * @param tags 标签名称
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder api(String... tags) {
 		
@@ -80,7 +80,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 
 	/**
 	 * 添加类注解  @ApiIgnore
-	 * @return
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder apiIgnore() {
 		
@@ -92,7 +92,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @Controller
-	 * @return
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder controller() {
 		return this.controller("");
@@ -101,7 +101,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	/**
 	 * 添加类注解 @Controller
 	 * @param name Controller名称：必须唯一
-	 * @return
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder controller(String name) {
 		ConstPool constPool = this.classFile.getConstPool();
@@ -111,7 +111,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @RestController
-	 * @return
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder restController() {
 		return this.restController("");
@@ -120,7 +120,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	/**
 	 * 添加类注解 @RestController
 	 * @param name Controller名称：必须唯一
-	 * @return
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder restController(String name) {
 		
@@ -132,7 +132,8 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @RequestMapping
-	 * @return
+	 * @param mapping			: The {@link MvcMapping} instance
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder requestMapping(MvcMapping mapping) {
 
@@ -144,7 +145,8 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 
 	/**
 	 * 添加类注解 @RequestMapping
-	 * @return
+	 * @param path			： The path attribute values of @RequestMapping 
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder requestMapping(String path) {
 
@@ -157,7 +159,14 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加类注解 @RequestMapping
-	 * @return
+	 * @param name 			： The name attribute value of @RequestMapping 
+	 * @param path			： The path attribute values of @RequestMapping 
+	 * @param method		： The method attribute values of @RequestMapping 
+	 * @param params		： The params attribute values of @RequestMapping 
+	 * @param headers		： The headers attribute values of @RequestMapping 
+	 * @param consumes		： The consumes attribute values of @RequestMapping 
+	 * @param produces		： The produces attribute values of @RequestMapping 
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder requestMapping(String name, String[] path, RequestMethod[] method,
 			String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -171,13 +180,13 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加字段注解 @Autowired 实现对象注入
-	 * @param type
-	 * @param name
+	 * @param type		： The type attribute value of @Autowired 
+	 * @param name		： The name attribute value of @Autowired 
 	 * @param required 	： Declares whether the annotated dependency is required.
-	 * @param qualifier ： 
-	 * @return
-	 * @throws CannotCompileException 
-	 * @throws NotFoundException 
+	 * @param <T> 	  	： 参数泛型 
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
+	 * @throws CannotCompileException if can't compile
+	 * @throws NotFoundException  if not found
 	 */
 	public <T> MvcEndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required) throws CannotCompileException, NotFoundException {
 		
@@ -198,15 +207,13 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加字段注解 @Autowired 实现对象注入
-	 * @param type
-	 * @param name
 	 * @param required 	： Declares whether the annotated dependency is required.
-	 * @param qualifier ： 
-	 * @return
-	 * @throws CannotCompileException 
-	 * @throws NotFoundException 
+	 * @param qualifier ： The qualifier attribute value of @Autowired 
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
+	 * @throws CannotCompileException if can't compile
+	 * @throws NotFoundException  if not found
 	 */
-	public <T> MvcEndpointApiCtClassBuilder autowiredHandler(boolean required, String qualifier) throws CannotCompileException, NotFoundException {
+	public MvcEndpointApiCtClassBuilder autowiredHandler(boolean required, String qualifier) throws CannotCompileException, NotFoundException {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		
@@ -235,13 +242,14 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 添加字段注解 @Autowired @Qualifier 实现对象注入
-	 * @param type
-	 * @param name
+	 * @param type		： The type attribute value of @Autowired 
+	 * @param name		： The name attribute value of @Autowired 
 	 * @param required 	： Declares whether the annotated dependency is required.
-	 * @param qualifier ： 
-	 * @return
-	 * @throws CannotCompileException 
-	 * @throws NotFoundException 
+	 * @param qualifier ： The qualifier attribute value of @Autowired 
+	 * @param <T> 	   ： 参数泛型
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
+	 * @throws CannotCompileException if can't compile
+	 * @throws NotFoundException  if not found
 	 */
 	public <T> MvcEndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required, String qualifier) throws CannotCompileException, NotFoundException {
 		
@@ -268,6 +276,9 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 通过给动态类增加 <code>@WebBound</code>注解实现，数据的绑定
+	 * @param uid			: The value of uid
+	 * @param json			: The value of json
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder bind(final String uid, final String json) {
 		return bind(new MvcBound(uid, json));
@@ -275,6 +286,8 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 通过给动态类增加 <code>@WebBound</code>注解实现，数据的绑定
+	 * @param bound			: The {@link MvcBound} instance
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
 	 */
 	public MvcEndpointApiCtClassBuilder bind(final MvcBound bound) {
 
@@ -297,8 +310,10 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
      * (semicolon).
      *
      * @param src               the source text.
+     * @return {@link MvcEndpointApiCtClassBuilder} instance
+     * @throws CannotCompileException if can't compile
      */
-	public <T> MvcEndpointApiCtClassBuilder makeField(final String src) throws CannotCompileException {
+	public MvcEndpointApiCtClassBuilder makeField(final String src) throws CannotCompileException {
 		//创建属性
         declaring.addField(CtField.make(src, declaring));
 		return this;
@@ -309,7 +324,7 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 		return this;	
 	}
 	
-	public <T> MvcEndpointApiCtClassBuilder removeField(final String fieldName) throws NotFoundException {
+	public MvcEndpointApiCtClassBuilder removeField(final String fieldName) throws NotFoundException {
 		
 		// 检查字段是否已经定义
 		if(!JavassistUtils.hasField(declaring, fieldName)) {
@@ -329,8 +344,10 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
      * <pre>"public Object id(Object obj) { return obj; }"</pre>
      *
      * @param src               the source text. 
+     * @return {@link MvcEndpointApiCtClassBuilder} instance
+     * @throws CannotCompileException if can't compile
      */
-	public <T> MvcEndpointApiCtClassBuilder makeMethod(final String src) throws CannotCompileException {
+	public MvcEndpointApiCtClassBuilder makeMethod(final String src) throws CannotCompileException {
 		//创建方法 
 		declaring.addMethod(CtMethod.make(src, declaring));
 		return this;
@@ -341,13 +358,13 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @param path   		： 发布地址
 	 * @param method 		： 请求方式(GET/POST)
 	 * @param contentType 	： 响应类型及编码
-	 * @param bound
-	 * @param params
-	 * @return
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
+	 * @param bound			：数据绑定对象
+	 * @param params		：参数信息
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
+	 * @throws CannotCompileException if can't compile
+	 * @throws NotFoundException  if not found
 	 */
-	public <T> MvcEndpointApiCtClassBuilder newMethod(String methodName, String path, RequestMethod method, String contentType,
+	public MvcEndpointApiCtClassBuilder newMethod(String methodName, String path, RequestMethod method, String contentType,
 			MvcBound bound, MvcParam<?>... params) throws CannotCompileException, NotFoundException {
 		
 		//ResponseEntity.class
@@ -388,9 +405,10 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	 * @param method ：方法注释信息
 	 * @param bound  ：方法绑定数据信息
 	 * @param params ： 参数信息
-	 * @return
-	 * @throws CannotCompileException
-	 * @throws NotFoundException 
+	 * @param <T> 	   ： 参数泛型
+	 * @return {@link MvcEndpointApiCtClassBuilder} instance
+	 * @throws CannotCompileException if can't compile
+	 * @throws NotFoundException  if not found
 	 */ 
 	public <T> MvcEndpointApiCtClassBuilder newMethod(final Class<T> rtClass, final MvcMethod method, final MvcBound bound, MvcParam<?>... params) throws CannotCompileException, NotFoundException {
 	       
@@ -459,10 +477,10 @@ public class MvcEndpointApiCtClassBuilder implements Builder<CtClass> {
 	
 	/**
 	 * 
-	 * javassist在加载类时会用Hashtable将类信息缓存到内存中，这样随着类的加载，内存会越来越大，甚至导致内存溢出。如果应用中要加载的类比较多，建议在使用完CtClass之后删除缓存
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
-	 * @return
-	 * @throws CannotCompileException
+	 * javassist在加载类时会用Hashtable将类信息缓存到内存中，这样随着类的加载，内存会越来越大，甚至导致内存溢出。
+	 * 如果应用中要加载的类比较多，建议在使用完CtClass之后删除缓存
+	 * @return The Class 
+	 * @throws CannotCompileException if can't compile
 	 */
 	public Class<?> toClass() throws CannotCompileException {
         try {

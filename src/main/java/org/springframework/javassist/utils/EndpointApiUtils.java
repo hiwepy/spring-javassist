@@ -72,6 +72,9 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @Api 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param tags 标签名称
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotApi(ConstPool constPool, String... tags) {
 
@@ -82,6 +85,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @ApiIgnore 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param desc 描述标签
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotApiIgnore(ConstPool constPool, String desc) {
 		return CtAnnotationBuilder.create(springfox.documentation.annotations.ApiIgnore.class, constPool).addStringMember("value", desc).build();
@@ -89,6 +95,9 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @Configuration 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param name bean 名称
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotConfiguration(ConstPool constPool, String name) {
 		return CtAnnotationBuilder.create(Configuration.class, constPool).addStringMember("value", name).build();
@@ -96,6 +105,12 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @Bean 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param name 				: name of bean
+	 * @param autowire 			: autowire type
+	 * @param initMethod 		: method name of init
+	 * @param destroyMethod 	: method name of destroy
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotBean(ConstPool constPool, String[] name, Autowire autowire
 			,String initMethod,String destroyMethod) {
@@ -107,6 +122,9 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @Lazy 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param lazy 				: whither lazy load class
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotLazy(ConstPool constPool, boolean lazy) {
 		return CtAnnotationBuilder.create(Lazy.class, constPool).addBooleanMember("value", lazy).build();
@@ -114,6 +132,10 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @Scope 注解
+	 * @param constPool {@link ConstPool} instance
+	 * @param scopeName 			: the name of scope
+	 * @param proxyMode 			: {@link ScopedProxyMode} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotScope(ConstPool constPool, String scopeName, ScopedProxyMode proxyMode) {
 		return CtAnnotationBuilder.create(Scope.class, constPool).addStringMember("scopeName", scopeName)
@@ -122,6 +144,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @Controller 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute values of @Controller
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotController(ConstPool constPool, String name) {
 		return CtAnnotationBuilder.create(Controller.class, constPool).addStringMember("value", name).build();
@@ -129,6 +154,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @RestController 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute values of @RestController
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotRestController(ConstPool constPool, String name) {
 		return CtAnnotationBuilder.create(RestController.class, constPool).addStringMember("value", name).build();
@@ -136,6 +164,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @RequestMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotRequestMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, RequestMapping.class, mapping);
@@ -143,6 +174,9 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @GetMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotGetMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, GetMapping.class, mapping);
@@ -150,6 +184,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PostMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPostMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, PostMapping.class, mapping);
@@ -157,6 +194,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PutMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPutMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, PutMapping.class, mapping);
@@ -164,6 +204,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @DeleteMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotDeleteMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, DeleteMapping.class, mapping);
@@ -171,6 +214,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PatchMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param mapping 	: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPatchMapping(ConstPool constPool, MvcMapping mapping) {
 		return annotHttpMethod(constPool, PatchMapping.class, mapping);
@@ -178,6 +224,10 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @RequestMapping | @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping | 注解
+	 * @param constPool 	: {@link ConstPool} instance
+	 * @param annotation	: The class of {@link java.lang.annotation.Annotation}
+	 * @param mapping 		: {@link MvcMapping} instance
+	 * @return {@link Annotation} instance
 	 */
 	private static Annotation annotHttpMethod(ConstPool constPool, 
 			Class<? extends java.lang.annotation.Annotation> annotation,
@@ -204,6 +254,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @RequestMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @RequestMapping
+	 * @param path 		: The path attribute values of @RequestMapping
+	 * @param method 	: The method attribute values of @RequestMapping
+	 * @param params	: The param attribute values of @RequestMapping
+	 * @param headers	: The header attribute values of @RequestMapping
+	 * @param consumes	: The consume attribute values of @RequestMapping
+	 * @param produces	: The produce attribute values of @RequestMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotRequestMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -212,6 +271,15 @@ public class EndpointApiUtils {
 
 	/**
 	 * 构造 @GetMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @GetMapping
+	 * @param path 		: The path attribute values of @GetMapping
+	 * @param method 	: The method attribute values of @GetMapping
+	 * @param params	: The param attribute values of @GetMapping
+	 * @param headers	: The header attribute values of @GetMapping
+	 * @param consumes	: The consume attribute values of @GetMapping
+	 * @param produces	: The produce attribute values of @GetMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotGetMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -220,6 +288,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PostMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @PostMapping
+	 * @param path 		: The path attribute values of @PostMapping
+	 * @param method 	: The method attribute values of @PostMapping
+	 * @param params	: The param attribute values of @PostMapping
+	 * @param headers	: The header attribute values of @PostMapping
+	 * @param consumes	: The consume attribute values of @PostMapping
+	 * @param produces	: The produce attribute values of @PostMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPostMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -228,6 +305,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PutMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @PutMapping
+	 * @param path 		: The path attribute values of @PutMapping
+	 * @param method 	: The method attribute values of @PutMapping
+	 * @param params	: The param attribute values of @PutMapping
+	 * @param headers	: The header attribute values of @PutMapping
+	 * @param consumes	: The consume attribute values of @PutMapping
+	 * @param produces	: The produce attribute values of @PutMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPutMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -236,6 +322,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @DeleteMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @DeleteMapping
+	 * @param path 		: The path attribute values of @DeleteMapping
+	 * @param method 	: The method attribute values of @DeleteMapping
+	 * @param params	: The param attribute values of @DeleteMapping
+	 * @param headers	: The header attribute values of @DeleteMapping
+	 * @param consumes	: The consume attribute values of @DeleteMapping
+	 * @param produces	: The produce attribute values of @DeleteMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotDeleteMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -244,6 +339,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @PatchMapping 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of @PatchMapping
+	 * @param path 		: The path attribute values of @PatchMapping
+	 * @param method 	: The method attribute values of @PatchMapping
+	 * @param params	: The param attribute values of @PatchMapping
+	 * @param headers	: The header attribute values of @PatchMapping
+	 * @param consumes	: The consume attribute values of @PatchMapping
+	 * @param produces	: The produce attribute values of @PatchMapping
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPatchMapping(ConstPool constPool, String name, String[] path,
 			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -252,6 +356,15 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @RequestMapping | @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping | 注解
+	 * @param constPool : {@link ConstPool} instance
+	 * @param name 		: The name attribute value of annotation
+	 * @param path 		: The path attribute values of annotation
+	 * @param method 	: The method attribute values of annotation
+	 * @param params	: The param attribute values of annotation
+	 * @param headers	: The header attribute values of annotation
+	 * @param consumes	: The consume attribute values of annotation
+	 * @param produces	: The produce attribute values of annotation
+	 * @return {@link Annotation} instance
 	 */
 	private static Annotation annotHttpMethod(ConstPool constPool, Class<? extends java.lang.annotation.Annotation> annotation,
 			String name, String[] path,	RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
@@ -348,13 +461,13 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 为方法添加  @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
-	 * @param ctMethod
-	 * @param constPool
-	 * @param path
-	 * @param method
-	 * @param contentType
-	 * @param bound
-	 * @param params
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param path			: The path attribute value of annotation
+	 * @param method		: The {@link RequestMethod method} instance
+	 * @param contentType	: The contentType attribute value of annotation
+	 * @param bound			: The {@link MvcBound bound} instance
+	 * @param params		: The {@link MvcParam param} values
 	 */
 	public static void methodAnnotations(CtMethod ctMethod, ConstPool constPool, String path, RequestMethod method,
 			String contentType, MvcBound bound, MvcParam<?>[] params) {
@@ -387,15 +500,13 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 为方法添加  @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
-	 * @param ctMethod
-	 * @param constPool
-	 * @param result
-	 * @param method
-	 * @param bound
-	 * @param params
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param method		: The {@link RequestMethod method} instance
+	 * @param bound			: The {@link MvcBound bound} instance
+	 * @param params		: The {@link MvcParam param} values
 	 */
-	public static <T> void methodAnnotations(CtMethod ctMethod, ConstPool constPool, MvcMethod method, MvcBound bound, MvcParam<?>... params) {
+	public static void methodAnnotations(CtMethod ctMethod, ConstPool constPool, MvcMethod method, MvcBound bound, MvcParam<?>... params) {
 		
 		// 获取方法属性对象
         AnnotationsAttribute methodAttr = JavassistUtils.getAnnotationsAttribute(ctMethod);
@@ -430,7 +541,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 设置方法体
-	 * @throws CannotCompileException 
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @param method		: The {@link RequestMethod method} instance
+	 * @throws CannotCompileException if can’t conplile
 	 */
 	public static void methodBody(CtMethod ctMethod, MvcMethod method) throws CannotCompileException {
         methodBody(ctMethod, method.getName());
@@ -438,7 +551,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 设置方法体
-	 * @throws CannotCompileException 
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @param methodName	: The name of method
+	 * @throws CannotCompileException if can’t conplile 
 	 */
 	public static void methodBody(CtMethod ctMethod, String methodName) throws CannotCompileException {
 		
@@ -460,8 +575,10 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 设置方法异常捕获逻辑
-	 * @throws NotFoundException 
-	 * @throws CannotCompileException 
+	 * @param pool			: The {@link ClassPool pool} instance
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @throws NotFoundException  if not found
+	 * @throws CannotCompileException if can't compile
 	 */
 	public static void methodCatch(ClassPool pool, CtMethod ctMethod) throws NotFoundException, CannotCompileException {
 		
@@ -473,6 +590,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 构造 @WebBound 注解
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param bound			: The {@link MvcBound bound} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotWebBound(ConstPool constPool, MvcBound bound) {
 
@@ -487,6 +607,9 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 根据参数 构造   @RequestMapping | @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param method		: The {@link MvcMethod method} instance
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotMethodMapping(ConstPool constPool, MvcMethod method) {
 		
@@ -530,6 +653,11 @@ public class EndpointApiUtils {
 	
 	/**
 	 * 根据参数 构造  @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param path			: The path attribute value of annotation
+	 * @param method		: The {@link RequestMethod method} instance
+	 * @param contentType	: The contentType attribute value of annotation
+	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotMethodMapping(ConstPool constPool, String path, RequestMethod method,
 			String contentType) {
@@ -569,8 +697,11 @@ public class EndpointApiUtils {
 	/**
 	 * 构造 @CookieValue | @MatrixVariable | @PathVariable | @RequestAttribute | @RequestBody | @RequestHeader
 	 *  | @RequestParam | @RequestPart 参数注解
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param params		: The params
+	 * @return {@link Annotation} Array
 	 */
-	public static <T> Annotation[][] annotParams(ConstPool constPool, MvcParam<?>... params) {
+	public static Annotation[][] annotParams(ConstPool constPool, MvcParam<?>... params) {
 
 		// 添加参数注解
 		if (params != null && params.length > 0) {
