@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.vindell</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>1.0.0.RELEASE</version>
+	<version>1.0.1.RELEASE</version>
 	<description>基于javassist生成Spring MVC 框架的Controller</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/vindell/${project.artifactId}</url>
@@ -382,6 +382,7 @@
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<java.version>1.8</java.version>
 		<javassist.version>3.22.0-GA</javassist.version>
+		<javassist-plus.version>1.0.0.RELEASE</javassist-plus.version>
 		<junit.version>4.12</junit.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<maven.version>3.0</maven.version>
@@ -518,7 +519,7 @@
 		<dependency>
 			<groupId>com.github.vindell</groupId>
 			<artifactId>javassist-plus</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${javassist-plus.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -533,7 +534,6 @@
 		    <groupId>io.swagger</groupId>
     		<artifactId>swagger-annotations</artifactId>
 		</dependency>
-		    
 
 	</dependencies>
 
