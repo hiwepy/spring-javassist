@@ -7,6 +7,6 @@
 <dependency>
 	<groupId>com.github.vindell</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.2.RELEASE</version>
 </dependency>
 ```
