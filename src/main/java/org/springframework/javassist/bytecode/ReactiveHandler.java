@@ -1,14 +1,20 @@
 package org.springframework.javassist.bytecode;
 
+import java.lang.reflect.InvocationHandler;
+
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public abstract class WebFluxEndpointApi extends EndpointApi {
+public abstract class ReactiveHandler extends EndpointApi {
 
-	public WebFluxEndpointApi() {
+	public ReactiveHandler() {
+	}
+	
+	public ReactiveHandler(InvocationHandler handler) {
+		super(handler);
 	}
 	
 	public Mono<ServerResponse> mono(ServerRequest request){

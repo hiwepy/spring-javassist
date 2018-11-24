@@ -11,26 +11,20 @@ import java.util.UUID;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.javassist.bytecode.WebMvcEndpointApiCtClassBuilder;
+import org.springframework.javassist.bytecode.ReactiveHandlerCtClassBuilder;
 import org.springframework.javassist.bytecode.definition.MvcBound;
-import org.springframework.javassist.bytecode.definition.MvcMethod;
-import org.springframework.javassist.bytecode.definition.MvcParam;
-import org.springframework.javassist.bytecode.definition.MvcParamFrom;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javassist.CtClass;
+import reactor.core.publisher.Flux;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class ControllerCtClassBuilder_Test {
+public class ReactiveHandlerCtClassBuilder_Test {
 
 	//@Test
 	@SuppressWarnings("deprecation")
 	public void testClass() throws Exception {
 		
-		CtClass ctClass = new WebMvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
-				.controller()
+		CtClass ctClass = new ReactiveHandlerCtClassBuilder("org.springframework.javassist.ReactiveHandler1")
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.makeMethod("public void sayHello(String txt) { System.out.println(txt); }")
@@ -87,13 +81,10 @@ public class ControllerCtClassBuilder_Test {
 		
 		InvocationHandler handler = new EndpointApiInvocationHandler();
 
-		Object ctObject = new WebMvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
-				.newMethod("sayHello", "say/{word}", RequestMethod.POST, MediaType.ALL_VALUE, new MvcBound("100212"),
-						new MvcParam(String.class, "text"))
-				.newMethod(ResponseEntity.class,
-						new MvcMethod("sayHello2", new String[] { "say2/{word}", "say22/{word}" }, RequestMethod.POST,
-								RequestMethod.GET),
-						new MvcBound("100212"), new MvcParam(String.class, "word", MvcParamFrom.PATH))
+		Object ctObject = new ReactiveHandlerCtClassBuilder("org.springframework.javassist.ReactiveHandlerV2")
+				.monoMethod(new MvcBound("100212"))
+				.fluxMethod(new MvcBound("100213"))
+				.newMethod(Flux.class, "sayHello2", new MvcBound("100214"))
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.toInstance(handler);
@@ -113,23 +104,29 @@ public class ControllerCtClassBuilder_Test {
 			}
 		}
 		System.err.println("=========Methods======================");
-		for (Method method : clazz.getDeclaredMethods()) {
-			System.out.println(method.getName());
-			System.err.println("=========Method Annotations======================");
-			for (Annotation anno : method.getAnnotations()) {
-				System.out.println(anno.toString());
+		
+		Class<?> searchType = clazz;
+		while (searchType != null) {
+			Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
+			for (Method method : methods) {
+				System.out.println(method.getName());
+				System.err.println("=========Method Annotations======================");
+				for (Annotation anno : method.getAnnotations()) {
+					System.out.println(anno.toString());
+				}
+				System.err.println("=========Method Parameter Annotations======================");
+				for (Annotation[] anno : method.getParameterAnnotations()) {
+					if(anno != null && anno.length > 0) {
+						System.out.println(anno[0].toString());
+					}
+				}
 			}
-			System.err.println("=========Method Parameter Annotations======================");
-			for (Annotation[] anno : method.getParameterAnnotations()) {
-				System.out.println(anno[0].toString());
-			}
+			searchType = searchType.getSuperclass();
 		}
+		
 		System.err.println("=========sayHello======================");
 		Method sayHello = clazz.getMethod("sayHello", String.class);
 		sayHello.invoke(ctObject,  " hi Hello " );
-		System.err.println("=========sayHello2======================");
-		Method sayHello2 = clazz.getMethod("sayHello2", String.class);
-		sayHello2.invoke(ctObject,  " hi Hello2 " );
 	}
 
 }
