@@ -6,17 +6,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.UUID;
-
-import javax.jws.WebParam;
 
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.javassist.bytecode.MvcEndpointApiCtClassBuilder;
+import org.springframework.javassist.bytecode.WebMvcEndpointApiCtClassBuilder;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.bytecode.definition.MvcMethod;
 import org.springframework.javassist.bytecode.definition.MvcParam;
@@ -29,9 +26,10 @@ import javassist.CtClass;
 public class ControllerCtClassBuilder_Test {
 
 	//@Test
+	@SuppressWarnings("deprecation")
 	public void testClass() throws Exception {
 		
-		CtClass ctClass = new MvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
+		CtClass ctClass = new WebMvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCase1")
 				.controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
@@ -89,15 +87,15 @@ public class ControllerCtClassBuilder_Test {
 		
 		InvocationHandler handler = new EndpointApiInvocationHandler();
 
-		Object ctObject = new MvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
-				.makeField("public int k = 3;")
-				.newField(String.class, "uid", UUID.randomUUID().toString())
+		Object ctObject = new WebMvcEndpointApiCtClassBuilder("org.apache.cxf.spring.boot.FirstCaseV2").controller()
 				.newMethod("sayHello", "say/{word}", RequestMethod.POST, MediaType.ALL_VALUE, new MvcBound("100212"),
 						new MvcParam(String.class, "text"))
 				.newMethod(ResponseEntity.class,
 						new MvcMethod("sayHello2", new String[] { "say2/{word}", "say22/{word}" }, RequestMethod.POST,
 								RequestMethod.GET),
 						new MvcBound("100212"), new MvcParam(String.class, "word", MvcParamFrom.PATH))
+				.makeField("public int k = 3;")
+				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.toInstance(handler);
 		
 		Class clazz = ctObject.getClass();

@@ -499,7 +499,27 @@ public class EndpointApiUtils {
 	}
 	
 	/**
-	 * 为方法添加  @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
+	 * 为方法添加   @WebBound 注解
+	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
+	 * @param constPool		: The {@link ConstPool constPool} instance
+	 * @param bound			: The {@link MvcBound bound} instance
+	 */
+	public static void methodBound(CtMethod ctMethod, ConstPool constPool, MvcBound bound) {
+		
+		// 获取方法属性对象
+        AnnotationsAttribute methodAttr = JavassistUtils.getAnnotationsAttribute(ctMethod);
+        MethodInfo methodInfo = ctMethod.getMethodInfo();
+        // 添加 @WebBound 注解
+        if (bound != null) {
+        	methodAttr.addAnnotation(EndpointApiUtils.annotWebBound(constPool, bound));
+        }
+         
+        methodInfo.addAttribute(methodAttr);
+        
+	}
+	
+	/**
+	 * 为方法添加  @WebBound | @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
 	 * @param ctMethod		: The {@link CtMethod ctMethod} instance
 	 * @param constPool		: The {@link ConstPool constPool} instance
 	 * @param method		: The {@link RequestMethod method} instance
@@ -560,8 +580,8 @@ public class EndpointApiUtils {
 		// 构造方法体
 		StringBuilder body = new StringBuilder(); 
         body.append("{\n");
-            body.append("System.out.println(123456);");
-            body.append("System.out.println(getHandler());");
+            //body.append("System.out.println(123456);");
+            //body.append("System.out.println(getHandler());");
         	body.append("if(getHandler() != null){\n");
         		body.append("Method method = this.getClass().getDeclaredMethod(\"" + methodName + "\", $sig);");
         		body.append("return ($r)getHandler().invoke($0, method, $args);");
@@ -751,7 +771,7 @@ public class EndpointApiUtils {
 				if(MvcParamFrom.BODY.compareTo(params[i].getFrom()) != 0){
 					paramAnnot.addMemberValue("name", new StringMemberValue(params[i].getName(), constPool));
 					if(defAnnot) {
-						paramAnnot.addMemberValue("defaultValue", new StringMemberValue(params[i].getDef(), constPool));
+						paramAnnot.addMemberValue("defaultValue", new StringMemberValue(StringUtils.trimWhitespace(params[i].getDef()), constPool));
 					}
 				}
 				paramAnnot.addMemberValue("name", new StringMemberValue(params[i].getName(), constPool));
