@@ -23,11 +23,15 @@ public class EndpointApiInvocationHandler implements InvocationHandler {
 		System.out.println("bound : " + bound.toString());
 		
 		System.out.println(method.getName());
+		System.err.println("=========Method Annotations======================");
 		for (Annotation anno : method.getAnnotations()) {
 			System.out.println(anno.toString());
 		}
+		System.err.println("=========Method Parameter Annotations======================");
 		for (Annotation[] anno : method.getParameterAnnotations()) {
-			System.out.println(anno[0].toString());
+			if(anno != null && anno.length > 0) {
+				System.out.println(anno[0].toString());
+			}
 		}
 		
 		for (Object arg : args) {
