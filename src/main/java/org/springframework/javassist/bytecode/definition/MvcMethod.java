@@ -1,6 +1,5 @@
 package org.springframework.javassist.bytecode.definition;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public class MvcMethod {
@@ -56,6 +55,7 @@ public class MvcMethod {
 	 * type level. The primary path mapping (i.e. the specified URI value) still has
 	 * to uniquely identify the target handler, with parameter mappings simply
 	 * expressing preconditions for invoking the handler.
+	 * 指定request中必须包含某些参数值是，才让该方法处理
 	 */
 	private String[] params = new String[] {};
 
@@ -83,7 +83,7 @@ public class MvcMethod {
 	 * at the type level, all method-level mappings inherit this header restriction
 	 * (i.e. the type-level restriction gets checked before the handler method is
 	 * even resolved).
-	 * 
+	 * 指定request中必须包含某些指定的header值，才能让该方法处理请求
 	 * @see org.springframework.http.MediaType
 	 */
 	private String[] headers = new String[] {};
@@ -109,6 +109,7 @@ public class MvcMethod {
 	 * at the type level, all method-level mappings override this consumes
 	 * restriction.
 	 * 
+	 * 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
 	 * @see org.springframework.http.MediaType
 	 * @see javax.servlet.http.HttpServletRequest#getContentType()
 	 */
@@ -138,10 +139,10 @@ public class MvcMethod {
 	 * <b>Supported at the type level as well as at the method level!</b> When used
 	 * at the type level, all method-level mappings override this produces
 	 * restriction.
-	 * 
+	 * 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回
 	 * @see org.springframework.http.MediaType
 	 */
-	private String[] produces = new String[] { MediaType.ALL_VALUE };
+	private String[] produces = new String[] {};
 
 	/**
 	 * Annotation that indicates a method return value should be bound to the web
@@ -156,10 +157,18 @@ public class MvcMethod {
 		this.method = method;
 	}
 	
-	public MvcMethod(String name, String[] path, boolean responseBody, RequestMethod... method) {
+	public MvcMethod(String name, String[] path, boolean responseBody, RequestMethod... methods) {
 		this.name = name;
 		this.path = path;
-		this.method = method;
+		this.method = methods;
+		this.responseBody = responseBody;
+	}
+	
+	public MvcMethod(String name, String[] path, boolean responseBody, String[] produces, RequestMethod[] methods) {
+		this.name = name;
+		this.path = path;
+		this.method = methods;
+		this.produces = produces;
 		this.responseBody = responseBody;
 	}
 
