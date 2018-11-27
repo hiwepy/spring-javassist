@@ -29,6 +29,62 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		super(pool, classname, EndpointApi.class);
 	}
 	
+	public <T> EndpointApiCtClassBuilder autowired(Class<T> type, String name, boolean required) throws CannotCompileException, NotFoundException {
+		super.autowired(type, name, required);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder autowiredHandler(boolean required, String qualifier)
+			throws CannotCompileException, NotFoundException {
+		super.autowiredHandler(required, qualifier);
+		return this;
+	}
+	
+	@Override
+	public <T> CtClassBuilder autowired(Class<T> type, String name, boolean required, String qualifier)
+			throws CannotCompileException, NotFoundException {
+		super.autowired(type, name, required, qualifier);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder bind(MvcBound bound) {
+		super.bind(bound);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder bind(String uid, String json) {
+		super.bind(uid, json);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder makeField(String src) throws CannotCompileException {
+		super.makeField(src);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder makeMethod(String src) throws CannotCompileException {
+		super.makeMethod(src);
+		return this;
+	}
+	
+	@Override
+	public <T> EndpointApiCtClassBuilder newField(Class<T> fieldClass, String fieldName, String fieldValue)
+			throws CannotCompileException, NotFoundException {
+		super.newField(fieldClass, fieldName, fieldValue);
+		return this;
+	}
+	
+	@Override
+	public EndpointApiCtClassBuilder removeField(String fieldName) throws NotFoundException {
+		super.removeField(fieldName);
+		return this;
+	}
+	
 	/**
 	 * 添加类注解 @Api
 	 * @param tags 标签名称

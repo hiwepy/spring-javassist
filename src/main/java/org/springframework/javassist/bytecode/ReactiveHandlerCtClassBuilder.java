@@ -31,6 +31,62 @@ public class ReactiveHandlerCtClassBuilder extends CtClassBuilder  {
 		super(pool, classname, ReactiveHandler.class);
 	}
 	
+	public <T> ReactiveHandlerCtClassBuilder autowired(Class<T> type, String name, boolean required) throws CannotCompileException, NotFoundException {
+		super.autowired(type, name, required);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder autowiredHandler(boolean required, String qualifier)
+			throws CannotCompileException, NotFoundException {
+		super.autowiredHandler(required, qualifier);
+		return this;
+	}
+	
+	@Override
+	public <T> CtClassBuilder autowired(Class<T> type, String name, boolean required, String qualifier)
+			throws CannotCompileException, NotFoundException {
+		super.autowired(type, name, required, qualifier);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder bind(MvcBound bound) {
+		super.bind(bound);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder bind(String uid, String json) {
+		super.bind(uid, json);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder makeField(String src) throws CannotCompileException {
+		super.makeField(src);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder makeMethod(String src) throws CannotCompileException {
+		super.makeMethod(src);
+		return this;
+	}
+	
+	@Override
+	public <T> ReactiveHandlerCtClassBuilder newField(Class<T> fieldClass, String fieldName, String fieldValue)
+			throws CannotCompileException, NotFoundException {
+		super.newField(fieldClass, fieldName, fieldValue);
+		return this;
+	}
+	
+	@Override
+	public ReactiveHandlerCtClassBuilder removeField(String fieldName) throws NotFoundException {
+		super.removeField(fieldName);
+		return this;
+	}
+	
 	/**
 	 * @param methodName   	： 方法名称
 	 * @param bound  		：方法绑定数据信息
