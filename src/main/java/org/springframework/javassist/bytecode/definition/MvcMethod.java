@@ -164,7 +164,7 @@ public class MvcMethod {
 		this.responseBody = responseBody;
 	}
 	
-	public MvcMethod(String name, String[] path, boolean responseBody, String[] produces, RequestMethod[] methods) {
+	public MvcMethod(String name, String[] path, boolean responseBody, String[] produces, RequestMethod... methods) {
 		this.name = name;
 		this.path = path;
 		this.method = methods;
