@@ -91,14 +91,12 @@ public class EndpointApiCtClassBuilder_Test {
 				.newMethod("sayHello", "say/{word}", RequestMethod.POST, MediaType.ALL_VALUE, new MvcBound("100212"),
 						new MvcParam(String.class, "text"))
 				.newMethod(ResponseEntity.class,
-						new MvcMethod("sayHello2", new String[] { "say2/{word}", "say22/{word}" }, RequestMethod.POST,
-								RequestMethod.GET),
+						new MvcMethod("sayHello2", new String[] { "say2/{word}", "say22/{word}" }, new RequestMethod[] {RequestMethod.POST, RequestMethod.GET} ),
 						new MvcBound("100212"), new MvcParam(String.class, "word", MvcParamFrom.PATH))
 				.controller()
 				.makeField("public int k = 3;")
 				.newField(String.class, "uid", UUID.randomUUID().toString())
 				.toInstance(handler);
-		
 		Class clazz = ctObject.getClass();
 		
 		System.err.println("=========Type Annotations======================");
