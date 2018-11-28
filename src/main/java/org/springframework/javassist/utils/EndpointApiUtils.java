@@ -68,6 +68,10 @@ import javassist.bytecode.ParameterAnnotationsAttribute;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
 
+/**
+ * https://www.cnblogs.com/sunfie/p/5154246.html
+ * @author <a href="https://github.com/vindell">vindell</a>
+ */
 public class EndpointApiUtils {
 
 	/**
@@ -235,21 +239,22 @@ public class EndpointApiUtils {
 
 		String name = StringUtils.hasText(mapping.getName()) ? mapping.getName() : "";
 		String[] path = ArrayUtils.isNotEmpty(mapping.getPath()) ? mapping.getPath() : new String[] {};
-		RequestMethod[] method = ArrayUtils.isNotEmpty(mapping.getMethod()) ? mapping.getMethod() : new RequestMethod[] {};
 		String[] params = ArrayUtils.isNotEmpty(mapping.getParams()) ? mapping.getParams() : new String[] {};
 		String[] headers = ArrayUtils.isNotEmpty(mapping.getHeaders()) ? mapping.getHeaders() : new String[] {};
 		String[] consumes = ArrayUtils.isNotEmpty(mapping.getConsumes()) ? mapping.getConsumes() : new String[] {};
 		String[] produces = ArrayUtils.isNotEmpty(mapping.getProduces()) ? mapping.getProduces() : new String[] {};
-
-		return CtAnnotationBuilder.create(annotation, constPool)
+		
+		CtAnnotationBuilder builder = CtAnnotationBuilder.create(annotation, constPool)
 				.addStringMember("name", name)
 				.addStringMember("path", path)
-				.addEnumMember("method", method)
 				.addStringMember("params", params)
 				.addStringMember("headers", headers)
 				.addStringMember("consumes", consumes)
-				.addStringMember("produces", produces).build();
-
+				.addStringMember("produces", produces);
+		if(ArrayUtils.isNotEmpty(mapping.getMethod())) {
+			builder = builder.addEnumMember("method", mapping.getMethod());
+		}
+		return builder.build();
 	}
 	
 	/**
@@ -274,7 +279,6 @@ public class EndpointApiUtils {
 	 * @param constPool : {@link ConstPool} instance
 	 * @param name 		: The name attribute value of @GetMapping
 	 * @param path 		: The path attribute values of @GetMapping
-	 * @param method 	: The method attribute values of @GetMapping
 	 * @param params	: The param attribute values of @GetMapping
 	 * @param headers	: The header attribute values of @GetMapping
 	 * @param consumes	: The consume attribute values of @GetMapping
@@ -282,8 +286,8 @@ public class EndpointApiUtils {
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotGetMapping(ConstPool constPool, String name, String[] path,
-			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
-		return annotHttpMethod(constPool, GetMapping.class, name, path, method, params, headers, consumes, produces);
+			String[] params, String[] headers, String[] consumes, String[] produces) {
+		return annotHttpMethod(constPool, GetMapping.class, name, path, null, params, headers, consumes, produces);
 	}
 	
 	/**
@@ -291,7 +295,6 @@ public class EndpointApiUtils {
 	 * @param constPool : {@link ConstPool} instance
 	 * @param name 		: The name attribute value of @PostMapping
 	 * @param path 		: The path attribute values of @PostMapping
-	 * @param method 	: The method attribute values of @PostMapping
 	 * @param params	: The param attribute values of @PostMapping
 	 * @param headers	: The header attribute values of @PostMapping
 	 * @param consumes	: The consume attribute values of @PostMapping
@@ -299,8 +302,8 @@ public class EndpointApiUtils {
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPostMapping(ConstPool constPool, String name, String[] path,
-			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
-		return annotHttpMethod(constPool, PostMapping.class, name, path, method, params, headers, consumes, produces);
+			String[] params, String[] headers, String[] consumes, String[] produces) {
+		return annotHttpMethod(constPool, PostMapping.class, name, path, null, params, headers, consumes, produces);
 	}
 	
 	/**
@@ -308,7 +311,6 @@ public class EndpointApiUtils {
 	 * @param constPool : {@link ConstPool} instance
 	 * @param name 		: The name attribute value of @PutMapping
 	 * @param path 		: The path attribute values of @PutMapping
-	 * @param method 	: The method attribute values of @PutMapping
 	 * @param params	: The param attribute values of @PutMapping
 	 * @param headers	: The header attribute values of @PutMapping
 	 * @param consumes	: The consume attribute values of @PutMapping
@@ -316,8 +318,8 @@ public class EndpointApiUtils {
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPutMapping(ConstPool constPool, String name, String[] path,
-			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
-		return annotHttpMethod(constPool, PutMapping.class, name, path, method, params, headers, consumes, produces);
+			String[] params, String[] headers, String[] consumes, String[] produces) {
+		return annotHttpMethod(constPool, PutMapping.class, name, path, null, params, headers, consumes, produces);
 	}
 	
 	/**
@@ -325,7 +327,6 @@ public class EndpointApiUtils {
 	 * @param constPool : {@link ConstPool} instance
 	 * @param name 		: The name attribute value of @DeleteMapping
 	 * @param path 		: The path attribute values of @DeleteMapping
-	 * @param method 	: The method attribute values of @DeleteMapping
 	 * @param params	: The param attribute values of @DeleteMapping
 	 * @param headers	: The header attribute values of @DeleteMapping
 	 * @param consumes	: The consume attribute values of @DeleteMapping
@@ -333,8 +334,8 @@ public class EndpointApiUtils {
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotDeleteMapping(ConstPool constPool, String name, String[] path,
-			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
-		return annotHttpMethod(constPool, DeleteMapping.class, name, path, method, params, headers, consumes, produces);
+			String[] params, String[] headers, String[] consumes, String[] produces) {
+		return annotHttpMethod(constPool, DeleteMapping.class, name, path, null, params, headers, consumes, produces);
 	}
 	
 	/**
@@ -342,7 +343,6 @@ public class EndpointApiUtils {
 	 * @param constPool : {@link ConstPool} instance
 	 * @param name 		: The name attribute value of @PatchMapping
 	 * @param path 		: The path attribute values of @PatchMapping
-	 * @param method 	: The method attribute values of @PatchMapping
 	 * @param params	: The param attribute values of @PatchMapping
 	 * @param headers	: The header attribute values of @PatchMapping
 	 * @param consumes	: The consume attribute values of @PatchMapping
@@ -350,8 +350,8 @@ public class EndpointApiUtils {
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotPatchMapping(ConstPool constPool, String name, String[] path,
-			RequestMethod[] method, String[] params, String[] headers, String[] consumes, String[] produces) {
-		return annotHttpMethod(constPool, PatchMapping.class, name, path, method, params, headers, consumes, produces);
+			String[] params, String[] headers, String[] consumes, String[] produces) {
+		return annotHttpMethod(constPool, PatchMapping.class, name, path, null, params, headers, consumes, produces);
 	}
 	
 	/**
@@ -371,20 +371,21 @@ public class EndpointApiUtils {
 
 		name = StringUtils.hasText(name) ? name : "";
 		path = ArrayUtils.isNotEmpty(path) ? path : new String[] {};
-		method = ArrayUtils.isNotEmpty(method) ? method : new RequestMethod[] {};
 		params = ArrayUtils.isNotEmpty(params) ? params : new String[] {};
 		headers = ArrayUtils.isNotEmpty(headers) ? headers : new String[] {};
 		consumes = ArrayUtils.isNotEmpty(consumes) ? consumes : new String[] {};
 		produces = ArrayUtils.isNotEmpty(produces) ? produces : new String[] {};
-
-		return CtAnnotationBuilder.create(annotation, constPool)
+		CtAnnotationBuilder builder = CtAnnotationBuilder.create(annotation, constPool)
 				.addStringMember("name", name)
 				.addStringMember("path", path)
-				.addEnumMember("method", method)
 				.addStringMember("params", params)
 				.addStringMember("headers", headers)
 				.addStringMember("consumes", consumes)
-				.addStringMember("produces", produces).build();
+				.addStringMember("produces", produces);
+		if(ArrayUtils.isNotEmpty(method)) {
+			builder = builder.addEnumMember("method", method);
+		}
+		return builder.build();
 
 	}
 	
@@ -636,34 +637,34 @@ public class EndpointApiUtils {
 		Annotation annot = null;
 		// 多种支持请求方法
 		if(method.getMethod().length > 1) {
-			annot = annotGetMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+			annot = annotRequestMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
 					method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			return annot;
 		}
 		// 仅支持一种请求方式
 		switch (method.getMethod()[0]) {
 			case GET:{
-				annot = annotGetMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotGetMapping(constPool, method.getName(), method.getPath(),  
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 			case POST:{
-				annot = annotPostMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotPostMapping(constPool, method.getName(), method.getPath(),  
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 			case PUT:{
-				annot = annotPutMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotPutMapping(constPool, method.getName(), method.getPath(), 
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 			case DELETE:{
-				annot = annotDeleteMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotDeleteMapping(constPool, method.getName(), method.getPath(), 
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 			case PATCH:{
-				annot = annotPatchMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotPatchMapping(constPool, method.getName(), method.getPath(),  
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 			default:{
-				annot = annotGetMapping(constPool, method.getName(), method.getPath(), method.getMethod(), 
+				annot = annotGetMapping(constPool, method.getName(), method.getPath(),  
 						method.getParams(), method.getHeaders(), method.getConsumes(), method.getProduces());
 			};break;
 		}
