@@ -246,6 +246,7 @@ public class EndpointApiUtils {
 		
 		CtAnnotationBuilder builder = CtAnnotationBuilder.create(annotation, constPool)
 				.addStringMember("name", name)
+				.addStringMember("value", path)
 				.addStringMember("path", path)
 				.addStringMember("params", params)
 				.addStringMember("headers", headers)
