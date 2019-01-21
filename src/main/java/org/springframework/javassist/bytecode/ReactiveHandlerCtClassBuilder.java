@@ -88,7 +88,6 @@ public class ReactiveHandlerCtClassBuilder extends CtClassBuilder  {
 	}
 	
 	/**
-	 * @param methodName   	： 方法名称
 	 * @param bound  		：方法绑定数据信息
 	 * @return {@link ReactiveHandlerCtClassBuilder} instance
 	 * @throws CannotCompileException if can't compile

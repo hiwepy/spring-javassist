@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.vindell</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>1.0.4-SNAPSHOT</version>
+	<version>1.0.4.RELEASE</version>
 	<description>基于javassist生成Spring MVC 框架的Controller</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/vindell/${project.artifactId}</url>
@@ -381,7 +381,7 @@
 		<commons-io.version>2.6</commons-io.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<java.version>1.8</java.version>
-		<javassist-plus.version>1.0.1.RELEASE</javassist-plus.version>
+		<javassist-plus.version>1.0.2.RELEASE</javassist-plus.version>
 		<junit.version>4.12</junit.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<maven.version>3.0</maven.version>
