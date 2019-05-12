@@ -401,7 +401,7 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<spring.version>5.1.0.RELEASE</spring.version>
 		<springfox.version>2.9.2</springfox.version>
-		<swagger.version>1.5.19</swagger.version>
+		<swagger.version>1.5.22</swagger.version>
 	</properties>
 
 	<dependencyManagement>

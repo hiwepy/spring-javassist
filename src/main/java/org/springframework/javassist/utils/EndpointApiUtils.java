@@ -73,30 +73,7 @@ import javassist.bytecode.annotation.StringMemberValue;
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class EndpointApiUtils {
-
-	/**
-	 * 构造 @Api 注解
-	 * @param constPool {@link ConstPool} instance
-	 * @param tags 标签名称
-	 * @return {@link Annotation} instance
-	 */
-	public static Annotation annotApi(ConstPool constPool, String... tags) {
-
-		tags = ArrayUtils.isEmpty(tags) ? new String[] { "" } : tags;
-		return CtAnnotationBuilder.create(io.swagger.annotations.Api.class, constPool).addStringMember("tags", tags).build();
-
-	} 
 	
-	/**
-	 * 构造 @ApiIgnore 注解
-	 * @param constPool {@link ConstPool} instance
-	 * @param desc 描述标签
-	 * @return {@link Annotation} instance
-	 */
-	public static Annotation annotApiIgnore(ConstPool constPool, String desc) {
-		return CtAnnotationBuilder.create(springfox.documentation.annotations.ApiIgnore.class, constPool).addStringMember("value", desc).build();
-	}
-
 	/**
 	 * 构造 @Configuration 注解
 	 * @param constPool {@link ConstPool} instance
