@@ -101,7 +101,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 			ConstPool constPool = this.classFile.getConstPool();
 			JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApi(constPool, tags));
 		}
-		
+		annotApi = true;
 		return this;
 	}
 
@@ -113,7 +113,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiIgnore(constPool, "Ignore"));
-		
+		annotApi = true;
 		return this;
 	}
 	
@@ -129,7 +129,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiKeyAuthDefinition(constPool, name, key, desc, in));
-		
+		annotApi = true;
 		return this;
 	}
 	
@@ -149,7 +149,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, response));
-		
+		annotApi = true;
 		return this;
 	}
 	
@@ -172,7 +172,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response));
-		
+		annotApi = true;
 		return this;
 	}
 	
@@ -198,7 +198,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer));
-		
+		annotApi = true;
 		return this;
 		
 	}
@@ -229,7 +229,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer, responseReference));
-		
+		annotApi = true;
 		return this;
 	}
 	
@@ -279,7 +279,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags,
 				response, responseContainer, responseReference, httpMethod, nickname, produces, consumes, protocols));
-
+		annotApi = true;
 		return this;
 	}
 	
@@ -335,7 +335,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 				SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer,
 						responseReference, httpMethod, nickname, produces, consumes, protocols, hidden, code,
 						ignoreJsonView));
-
+		annotApi = true;
 		return this;
 	}
 	
@@ -348,7 +348,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiImplicitParams(constPool, apiImplicitParams));
-
+		annotApi = true;
 		return this;
 	}
 	
@@ -361,7 +361,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiResponses(constPool, apiResponses));
-
+		annotApi = true;
 		return this;
 		
 	}

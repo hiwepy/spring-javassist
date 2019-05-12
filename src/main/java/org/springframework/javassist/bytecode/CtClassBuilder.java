@@ -38,6 +38,7 @@ public class CtClassBuilder implements Builder<CtClass> {
 	protected CtClass declaring  = null;
 	protected ClassFile classFile = null;
 	//private Loader loader = new Loader(pool);
+	protected boolean annotApi = false;
 	
 	public CtClassBuilder(final String classname) throws CannotCompileException, NotFoundException  {
 		this(ClassPoolFactory.getDefaultPool(), classname, Object.class);
