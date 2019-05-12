@@ -145,6 +145,40 @@ public class MvcApiImplicitParam {
 	 */
 	String collectionFormat = "";
 
+	public MvcApiImplicitParam() {
+	}
+	
+	public MvcApiImplicitParam(String name, String value, boolean required, String dataType) {
+		this.name = name;
+		this.value = value;
+		this.required = required;
+		this.dataType = dataType;
+	}
+	
+	public MvcApiImplicitParam(String name, String value, String defaultValue, String allowableValues, boolean required,
+			String access, boolean allowMultiple, String dataType, Class<?> dataTypeClass, String paramType,
+			String example, String type, String format, boolean allowEmptyValue, boolean readOnly,
+			String collectionFormat) {
+		this.name = name;
+		this.value = value;
+		this.defaultValue = defaultValue;
+		this.allowableValues = allowableValues;
+		this.required = required;
+		this.access = access;
+		this.allowMultiple = allowMultiple;
+		this.dataType = dataType;
+		this.dataTypeClass = dataTypeClass;
+		this.paramType = paramType;
+		this.example = example;
+		this.type = type;
+		this.format = format;
+		this.allowEmptyValue = allowEmptyValue;
+		this.readOnly = readOnly;
+		this.collectionFormat = collectionFormat;
+	}
+
+
+
 	public String getName() {
 		return name;
 	}

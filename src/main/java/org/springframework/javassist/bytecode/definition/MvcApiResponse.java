@@ -50,6 +50,32 @@ public class MvcApiResponse {
 	 * Valid values are "List", "Set" or "Map". Any other value will be ignored.
 	 */
 	String responseContainer = "";
+	
+	public MvcApiResponse(int code, String message) {
+		this.code = code;
+		this.message = message;
+	}
+	
+	public MvcApiResponse(int code, String message, Class<?> response) {
+		this.code = code;
+		this.message = message;
+		this.response = response;
+	}
+	
+	public MvcApiResponse(int code, String message, Class<?> response, String responseContainer) {
+		this.code = code;
+		this.message = message;
+		this.response = response;
+		this.responseContainer = responseContainer;
+	}
+	
+	public MvcApiResponse(int code, String message, Class<?> response, String reference, String responseContainer) {
+		this.code = code;
+		this.message = message;
+		this.response = response;
+		this.reference = reference;
+		this.responseContainer = responseContainer;
+	}
 
 	public int getCode() {
 		return code;
