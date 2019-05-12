@@ -116,7 +116,7 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		
 		ConstPool constPool = this.classFile.getConstPool();
 		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiIgnore(constPool, "Ignore"));
-		annotApi = true;
+		annotApi = false;
 		return this;
 	}
 	
