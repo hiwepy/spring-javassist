@@ -88,6 +88,23 @@ public class SwaggerApiUtils {
 	 *                          Should be 120 characters or less for proper
 	 *                          visibility in Swagger-UI.
 	 * @param notes             A verbose description of the operation.
+	 * @return {@link Annotation} instance
+	 */
+	public static Annotation annotApiOperation(ConstPool constPool, String value, String notes) {
+
+		return CtAnnotationBuilder.create(ApiOperation.class, constPool)
+				.addStringMember("value", StringUtils.defaultString(value, ""))
+				.addStringMember("notes", StringUtils.defaultString(notes, "")).build();
+	}
+	
+	/**
+	 * 构造 @ApiOperation 注解
+	 * 
+	 * @param constPool         {@link ConstPool} instance
+	 * @param value             Provides a brief description of this operation.
+	 *                          Should be 120 characters or less for proper
+	 *                          visibility in Swagger-UI.
+	 * @param notes             A verbose description of the operation.
 	 * @param response          The response type of the operation. If the value
 	 *                          used is a class representing a primitive
 	 *                          ({@code Integer}, {@code Long}, ...) the

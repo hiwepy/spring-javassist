@@ -1,5 +1,8 @@
 package org.springframework.javassist.bytecode;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import org.springframework.javassist.bytecode.definition.MvcApiImplicitParam;
 import org.springframework.javassist.bytecode.definition.MvcApiResponse;
 import org.springframework.javassist.bytecode.definition.MvcBound;
@@ -12,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.github.vindell.javassist.utils.JavassistUtils;
 
-import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ConstPool;
-import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.MethodInfo;
 
 /**
  * 动态构建Controller接口
@@ -116,256 +119,6 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
 		annotApi = true;
 		return this;
 	}
-	
-	/**
-	 * 添加类注解  @ApiKeyAuthDefinition
-	 * @param name The name of the header or query parameter to be used.
-	 * @param key Key used to refer to this security definition
-	 * @param desc A short description for security scheme.
-	 * @param in The location of the API key. Valid values are "query" or "header"
-	 * @return {@link EndpointApiCtClassBuilder} instance
-	 */
-	public EndpointApiCtClassBuilder apiKeyAuthDefinition(String name, String key, String desc, ApiKeyLocation in) {
-		
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiKeyAuthDefinition(constPool, name, key, desc, in));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 添加类注解  @ApiOperation
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @return {@link EndpointApiCtClassBuilder} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, Class<?> response) {
-		
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, response));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiOperation 注解
-	 * 
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param tags              A list of tags for API documentation control.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, String[] tags,
-			Class<?> response) {
-
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiOperation 注解
-	 * 
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param tags              A list of tags for API documentation control.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @param responseContainer Declares a container wrapping the response. Valid
-	 *                          values are "List", "Set" or "Map". Any other value
-	 *                          will be ignored.
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, String[] tags,
-			Class<?> response, String responseContainer) {
-
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer));
-		annotApi = true;
-		return this;
-		
-	}
-	
-	/**
-	 * 构造 @ApiOperation 注解
-	 * 
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param tags              A list of tags for API documentation control.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @param responseContainer Declares a container wrapping the response. Valid
-	 *                          values are "List", "Set" or "Map". Any other value
-	 *                          will be ignored.
-	 * @param responseReference Specifies a reference to the response type. The
-	 *                          specified reference can be either local or remote
-	 *                          and will be used as-is, and will override any
-	 *                          specified response() class.
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, String[] tags,
-			Class<?> response, String responseContainer, String responseReference) {
-
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer, responseReference));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiOperation 注解
-	 * 
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param tags              A list of tags for API documentation control.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @param responseContainer Declares a container wrapping the response. Valid
-	 *                          values are "List", "Set" or "Map". Any other value
-	 *                          will be ignored.
-	 * @param responseReference Specifies a reference to the response type. The
-	 *                          specified reference can be either local or remote
-	 *                          and will be used as-is, and will override any
-	 *                          specified response() class.
-	 * @param httpMethod        Corresponds to the `method` field as the HTTP method
-	 *                          used. Acceptable values are "GET", "HEAD", "POST",
-	 *                          "PUT", "DELETE", "OPTIONS" and "PATCH".
-	 * @param nickname          The operationId is used by third-party tools to
-	 *                          uniquely identify this operation. In Swagger 2.0,
-	 *                          this is no longer mandatory and if not provided will
-	 *                          remain empty.
-	 * @param produces          Takes in comma-separated values of content types.
-	 *                          For example, "application/json, application/xml"
-	 *                          would suggest this operation generates JSON and XML
-	 *                          output.
-	 * @param consumes          Takes in comma-separated values of content types.
-	 *                          For example, "application/json, application/xml"
-	 *                          would suggest this API Resource accepts JSON and XML
-	 *                          input.
-	 * @param protocols         Sets specific protocols (schemes) for this
-	 *                          operation. Comma-separated values of the available
-	 *                          protocols. Possible values: http, https, ws, wss.
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, String[] tags,
-			Class<?> response, String responseContainer, String responseReference, String httpMethod, String nickname,
-			String produces, String consumes, String protocols) {
-
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags,
-				response, responseContainer, responseReference, httpMethod, nickname, produces, consumes, protocols));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiOperation 注解
-	 * 
-	 * @param value             Provides a brief description of this operation.
-	 *                          Should be 120 characters or less for proper
-	 *                          visibility in Swagger-UI.
-	 * @param notes             A verbose description of the operation.
-	 * @param tags              A list of tags for API documentation control.
-	 * @param response          The response type of the operation. If the value
-	 *                          used is a class representing a primitive
-	 *                          ({@code Integer}, {@code Long}, ...) the
-	 *                          corresponding primitive type will be used.
-	 * @param responseContainer Declares a container wrapping the response. Valid
-	 *                          values are "List", "Set" or "Map". Any other value
-	 *                          will be ignored.
-	 * @param responseReference Specifies a reference to the response type. The
-	 *                          specified reference can be either local or remote
-	 *                          and will be used as-is, and will override any
-	 *                          specified response() class.
-	 * @param httpMethod        Corresponds to the `method` field as the HTTP method
-	 *                          used. Acceptable values are "GET", "HEAD", "POST",
-	 *                          "PUT", "DELETE", "OPTIONS" and "PATCH".
-	 * @param nickname          The operationId is used by third-party tools to
-	 *                          uniquely identify this operation. In Swagger 2.0,
-	 *                          this is no longer mandatory and if not provided will
-	 *                          remain empty.
-	 * @param produces          Takes in comma-separated values of content types.
-	 *                          For example, "application/json, application/xml"
-	 *                          would suggest this operation generates JSON and XML
-	 *                          output.
-	 * @param consumes          Takes in comma-separated values of content types.
-	 *                          For example, "application/json, application/xml"
-	 *                          would suggest this API Resource accepts JSON and XML
-	 *                          input.
-	 * @param protocols         Sets specific protocols (schemes) for this
-	 *                          operation. Comma-separated values of the available
-	 *                          protocols. Possible values: http, https, ws, wss.
-	 * @param hidden            Hides the operation from the list of operations.
-	 * @param code              The HTTP status code of the response.
-	 * @param ignoreJsonView    Ignores JsonView annotations while resolving
-	 *                          operations and types. For backward compatibility
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiOperation(String value, String notes, String[] tags,
-			Class<?> response, String responseContainer, String responseReference, String httpMethod, String nickname,
-			String produces, String consumes, String protocols, boolean hidden, int code, boolean ignoreJsonView) {
-		
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring,
-				SwaggerApiUtils.annotApiOperation(constPool, value, notes, tags, response, responseContainer,
-						responseReference, httpMethod, nickname, produces, consumes, protocols, hidden, code,
-						ignoreJsonView));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiImplicitParams 注解
-	 * @param apiResponses 	: {@link MvcApiImplicitParam} array instance
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiImplicitParams(MvcApiImplicitParam ... apiImplicitParams) {
-		
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiImplicitParams(constPool, apiImplicitParams));
-		annotApi = true;
-		return this;
-	}
-	
-	/**
-	 * 构造 @ApiResponses 注解
-	 * @param apiResponses 	: {@link MvcApiResponse} array instance
-	 * @return {@link Annotation} instance
-	 */
-	public EndpointApiCtClassBuilder apiResponses(MvcApiResponse ... apiResponses) {
-		
-		ConstPool constPool = this.classFile.getConstPool();
-		JavassistUtils.addClassAnnotation(declaring, SwaggerApiUtils.annotApiResponses(constPool, apiResponses));
-		annotApi = true;
-		return this;
-		
-	}
-	
 	
 	/**
 	 * 添加类注解 @Controller
@@ -492,6 +245,33 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
         // 为方法添加  @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
         EndpointApiUtils.methodAnnotations(ctMethod, constPool, path, method, contentType, bound, params);
         
+        // 为方法添加  @ApiOperation | @ApiImplicitParams | @ApiResponses 注解
+        if(annotApi) {
+        	
+        	// 获取方法属性对象
+            AnnotationsAttribute methodAttr = JavassistUtils.getAnnotationsAttribute(ctMethod);
+            MethodInfo methodInfo = ctMethod.getMethodInfo();
+            
+            // 添加 @ApiOperation 注解
+        	methodAttr.addAnnotation(SwaggerApiUtils.annotApiOperation(constPool, String.format("Method : %s", methodName), bound.getNotes()));
+            // 添加 @ApiImplicitParams 注解
+            if(params != null && params.length > 0) {
+
+				MvcApiImplicitParam[] apiImplicitParams = Arrays.stream(params).map(param -> {
+					MvcApiImplicitParam implicitParam = new MvcApiImplicitParam(param.getName(), "", param.isRequired(),
+							param.getType().getName());
+					implicitParam.setDefaultValue(param.getDef());
+					return implicitParam;
+				}).collect(Collectors.toList()).toArray(new MvcApiImplicitParam[params.length]);
+
+				methodAttr.addAnnotation(SwaggerApiUtils.annotApiImplicitParams(constPool, apiImplicitParams));
+            }
+            // 添加@ApiResponses 注解
+        	methodAttr.addAnnotation(SwaggerApiUtils.annotApiResponses(constPool, new MvcApiResponse(0, "Invoke Success", Object.class)));
+            
+            methodInfo.addAttribute(methodAttr);
+        }
+        
         //新增方法
         declaring.addMethod(ctMethod);
         
@@ -535,6 +315,35 @@ public class EndpointApiCtClassBuilder extends CtClassBuilder {
         EndpointApiUtils.methodCatch(pool, ctMethod);
         // @GetMapping | @PostMapping | @PutMapping | @DeleteMapping | @PatchMapping 注解
         EndpointApiUtils.methodAnnotations(ctMethod, constPool, method, bound, params);
+        
+        // 为方法添加  @ApiOperation | @ApiImplicitParams | @ApiResponses 注解
+        if(annotApi) {
+        	
+        	// 获取方法属性对象
+            AnnotationsAttribute methodAttr = JavassistUtils.getAnnotationsAttribute(ctMethod);
+            MethodInfo methodInfo = ctMethod.getMethodInfo();
+            
+            // 添加 @ApiOperation 注解
+        	methodAttr.addAnnotation(SwaggerApiUtils.annotApiOperation(constPool, String.format("Method : %s", method.getName()), bound.getNotes()));
+            // 添加 @ApiImplicitParams 注解
+            if(params != null && params.length > 0) {
+
+				MvcApiImplicitParam[] apiImplicitParams = Arrays.stream(params).map(param -> {
+					MvcApiImplicitParam implicitParam = new MvcApiImplicitParam(param.getName(), "", param.isRequired(),
+							param.getType().getName());
+					implicitParam.setDefaultValue(param.getDef());
+					return implicitParam;
+				}).collect(Collectors.toList()).toArray(new MvcApiImplicitParam[params.length]);
+
+				methodAttr.addAnnotation(SwaggerApiUtils.annotApiImplicitParams(constPool, apiImplicitParams));
+            }
+            // 添加@ApiResponses 注解
+            if(!rtClass.isAssignableFrom(Void.class)) {
+            	methodAttr.addAnnotation(SwaggerApiUtils.annotApiResponses(constPool, new MvcApiResponse(0, "Invoke Success", rtClass)));
+            }
+            
+            methodInfo.addAttribute(methodAttr);
+        }
         
         //新增方法
         declaring.addMethod(ctMethod);

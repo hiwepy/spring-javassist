@@ -23,6 +23,11 @@ public class MvcBound {
 	 * 2、json：绑定的数据对象JSON格式，为了方便，这里采用json进行数据传输
 	 */
 	private String json = "";
+	
+	/**
+	 * 2、辅助描述信息
+	 */
+	private String notes = "";
 
 	public String getUid() {
 		return uid;
@@ -38,6 +43,14 @@ public class MvcBound {
 
 	public void setJson(String json) {
 		this.json = json;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 }

@@ -155,6 +155,13 @@ public class MvcApiImplicitParam {
 		this.dataType = dataType;
 	}
 	
+	public MvcApiImplicitParam(String name, String value, boolean required, Class<?> dataTypeClass) {
+		this.name = name;
+		this.value = value;
+		this.required = required;
+		this.dataTypeClass = dataTypeClass;
+	}
+	
 	public MvcApiImplicitParam(String name, String value, String defaultValue, String allowableValues, boolean required,
 			String access, boolean allowMultiple, String dataType, Class<?> dataTypeClass, String paramType,
 			String example, String type, String format, boolean allowEmptyValue, boolean readOnly,
