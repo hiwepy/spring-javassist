@@ -21,6 +21,7 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 import javassist.CtNewConstructor;
+import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.AnnotationsAttribute;
@@ -33,6 +34,11 @@ import javassist.bytecode.annotation.Annotation;
  */
 public class CtClassBuilder implements Builder<CtClass> {
 	
+	protected final static String SETTER_STR    = "set";  
+	protected final static String GETTER_STR    = "get";  
+    // type/fieldName  
+    protected final static String fieldTemplate = "private %s %s;";  
+    
 	// 构建动态类
 	protected ClassPool pool = null;
 	protected CtClass declaring  = null;
@@ -204,6 +210,13 @@ public class CtClassBuilder implements Builder<CtClass> {
 		return this;
 	}
 	
+	public <T> CtClassBuilder makeField(final Class<T> fieldClass, final String fieldName) throws CannotCompileException {
+		//创建属性
+		CtField newField = CtField.make(String.format(fieldTemplate, fieldClass.getName(), fieldName), declaring);  
+        declaring.addField(newField);
+		return this;
+	}
+	
 	public <T> CtClassBuilder newField(final Class<T> fieldClass, final String fieldName, final String fieldValue) throws CannotCompileException, NotFoundException {
 		CtFieldBuilder.create(declaring, this.pool.get(fieldClass.getName()), fieldName, fieldValue);
 		return this;	
@@ -220,7 +233,7 @@ public class CtClassBuilder implements Builder<CtClass> {
 		
 		return this;
 	}
-
+	
 	/**
      * Compiles the given source code and creates a method.
      * The source code must include not only the method body
@@ -235,6 +248,25 @@ public class CtClassBuilder implements Builder<CtClass> {
 	public CtClassBuilder makeMethod(final String src) throws CannotCompileException {
 		//创建方法 
 		declaring.addMethod(CtMethod.make(src, declaring));
+		return this;
+	}
+	
+	
+	public CtClassBuilder makeSetter(final String fieldName) throws CannotCompileException, NotFoundException {
+		//创建方法 
+		CtField newField = declaring.getDeclaredField(fieldName);
+		String setMethodName = SETTER_STR + StringUtils.capitalize(fieldName);  
+		CtMethod setter = CtNewMethod.setter(setMethodName, newField);  
+		declaring.addMethod(setter);
+		return this;
+	}
+	
+	public CtClassBuilder makeGetter(final String fieldName) throws CannotCompileException, NotFoundException {
+		//创建方法 
+		CtField newField = declaring.getDeclaredField(fieldName);
+		String getMethodName = GETTER_STR + StringUtils.capitalize(fieldName);  
+		CtMethod getter = CtNewMethod.getter(getMethodName, newField);  
+		declaring.addMethod(getter);
 		return this;
 	}
 	
