@@ -334,7 +334,7 @@ public class SwaggerApiUtils {
 	/**
 	 * 构造 @ApiImplicitParams 注解
 	 * @param constPool : {@link ConstPool} instance
-	 * @param apiResponses 	: {@link MvcApiImplicitParam} array instance
+	 * @param apiImplicitParams 	: {@link MvcApiImplicitParam} array instance
 	 * @return {@link Annotation} instance
 	 */
 	public static Annotation annotApiImplicitParams(ConstPool constPool, MvcApiImplicitParam ... apiImplicitParams) {
