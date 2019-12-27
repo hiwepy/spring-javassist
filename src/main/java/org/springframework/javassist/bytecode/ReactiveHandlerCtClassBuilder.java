@@ -4,7 +4,7 @@ import org.omg.CORBA.ServerRequest;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.utils.EndpointApiUtils;
 
-import com.github.vindell.javassist.utils.JavassistUtils;
+import com.github.hiwepy.javassist.utils.JavassistUtils;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;

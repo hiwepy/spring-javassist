@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.utils.EndpointApiUtils;
 
-import com.github.vindell.javassist.bytecode.CtAnnotationBuilder;
-import com.github.vindell.javassist.bytecode.CtFieldBuilder;
-import com.github.vindell.javassist.utils.ClassPoolFactory;
-import com.github.vindell.javassist.utils.JavassistUtils;
+import com.github.hiwepy.javassist.bytecode.CtAnnotationBuilder;
+import com.github.hiwepy.javassist.bytecode.CtFieldBuilder;
+import com.github.hiwepy.javassist.utils.ClassPoolFactory;
+import com.github.hiwepy.javassist.utils.JavassistUtils;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, vindell (https://github.com/vindell).
+ * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.javassist.bytecode.definition.MvcApiImplicitParam;
 import org.springframework.javassist.bytecode.definition.MvcApiResponse;
 
-import com.github.vindell.javassist.bytecode.CtAnnotationBuilder;
+import com.github.hiwepy.javassist.bytecode.CtAnnotationBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,7 +35,7 @@ import javassist.bytecode.annotation.Annotation;
 
 /**
  * https://www.cnblogs.com/sunfie/p/5154246.html
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class SwaggerApiUtils {
 
