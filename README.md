@@ -5,7 +5,7 @@
 
 ``` xml
 <dependency>
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-javassist</artifactId>
 	<version>${project.version}</version>
 </dependency>
