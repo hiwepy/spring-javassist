@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>1.0.6-SNAPSHOT</version>
+	<version>1.0.6.RELEASE</version>
 	<description>基于javassist生成Spring MVC 框架的Controller</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
@@ -232,6 +232,10 @@
 							<goals>
 								<goal>jar</goal>
 							</goals>
+							<configuration>
+								<!-- add this to disable checking -->
+								<additionalparam>-Xdoclint:none</additionalparam>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
