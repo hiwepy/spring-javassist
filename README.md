@@ -7,6 +7,6 @@
 <dependency>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.7.RELEASE</version>
 </dependency>
 ```
