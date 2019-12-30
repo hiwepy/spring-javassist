@@ -1,8 +1,8 @@
 package org.springframework.javassist.bytecode;
 
-import org.omg.CORBA.ServerRequest;
 import org.springframework.javassist.bytecode.definition.MvcBound;
 import org.springframework.javassist.utils.EndpointApiUtils;
+import org.springframework.web.reactive.function.server.ServerRequest;
 
 import com.github.hiwepy.javassist.utils.JavassistUtils;
 
