@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-javassist</artifactId>
-	<version>6.1.x.20241003-SNAPSHOT</version>
+	<version>6.1.x.20241003.RELEASE</version>
 	<description>基于javassist生成Spring MVC 框架的Controller</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
@@ -402,6 +402,7 @@
 		<commons-io.version>2.17.0</commons-io.version>
 		<jakarta-servlet.version>6.0.0</jakarta-servlet.version>
 		<jakarta-validation.version>3.0.2</jakarta-validation.version>
+		<jakarta-xml-ws.version>4.0.2</jakarta-xml-ws.version>
 		<javassist-plus.version>1.0.4.RELEASE</javassist-plus.version>
 		<junit.version>4.13.2</junit.version>
 		<junit-jupiter.version>5.10.3</junit-jupiter.version>
@@ -493,6 +494,13 @@
 			    <version>${swagger.version}</version>
 			</dependency>
 
+			<!-- https://mvnrepository.com/artifact/jakarta.xml.ws/jakarta.xml.ws-api -->
+			<dependency>
+				<groupId>jakarta.xml.ws</groupId>
+				<artifactId>jakarta.xml.ws-api</artifactId>
+				<version>${jakarta-xml-ws.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -532,7 +540,7 @@
 			<groupId>com.github.hiwepy</groupId>
 			<artifactId>javassist-plus</artifactId>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-webmvc</artifactId>
